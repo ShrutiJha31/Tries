@@ -1,0 +1,81 @@
+  struct Node
+  {
+        Node* alpha[26];
+        bool isendofWord=false;
+      bool containsKey(char ch)
+      {
+          return !(alpha[ch-'a']==NULL);
+      }
+      
+      void setEnd()
+      {
+          isendofWord = true;
+      }
+    };
+
+
+class Trie {
+public:
+    
+  Node* root;
+    Trie() {
+      root=new Node();
+       
+    }
+    
+    
+    void insert(string word) {
+        Node* node = root;
+        for(int i=0;i<word.length();i++)
+        {
+            if(node->containsKey(word[i])==false)
+            {
+                Node* new_Node=new Node();
+                node->alpha[word[i]-'a']=new_Node;
+                node=new_Node;
+            }
+            else
+                node=node->alpha[word[i]-'a'];
+        }
+        node->setEnd();
+        
+    }
+    
+    
+    
+    bool search(string word) {
+         Node* node = root;
+        for(int i=0;i<word.length();i++)
+        {
+            if(node->containsKey(word[i])==false)
+            {
+                return false;
+            }
+          node=node->alpha[word[i]-'a'];
+        }
+        return node->isendofWord;
+    }
+    
+    
+    
+    bool startsWith(string word) {
+          Node* node = root;
+        for(int i=0;i<word.length();i++)
+        {
+            if(node->containsKey(word[i])==false)
+            {
+                return false;
+            }
+          node=node->alpha[word[i]-'a'];
+        }
+        return true;
+    }
+};
+
+/**
+ * Your Trie object will be instantiated and called as such:
+ * Trie* obj = new Trie();
+ * obj->insert(word);
+ * bool param_2 = obj->search(word);
+ * bool param_3 = obj->startsWith(prefix);
+ */
