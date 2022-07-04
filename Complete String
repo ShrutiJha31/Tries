@@ -1,0 +1,88 @@
+#include<bits/stdc++.h>
+using namespace std;
+struct Node
+  {
+        Node* alpha[26];
+        bool isendofWord=false;
+      bool containsKey(char ch)
+      {
+          return !(alpha[ch-'a']==NULL);
+      }
+      
+      void setEnd()
+      {
+          isendofWord = true;
+      }
+ };
+  Node* root=new Node();
+   void insert(string word) {
+        Node* node = root;
+        for(int i=0;i<word.length();i++)
+        {
+            if(node->containsKey(word[i])==false)
+            {
+                Node* new_Node=new Node();
+                node->alpha[word[i]-'a']=new_Node;
+                node=new_Node;
+            }
+            else
+                node=node->alpha[word[i]-'a'];
+        }
+        node->setEnd();
+        
+    }
+
+    
+    bool search(string word) {
+         Node* node = root;
+        for(int i=0;i<word.length();i++)
+        {
+            if(node->containsKey(word[i])==false)
+            {
+                return false;
+            }
+          node=node->alpha[word[i]-'a'];
+        }
+        return node->isendofWord;
+    }
+    
+string completeString(int n, vector<string> &a){
+    root=new Node();
+   for(auto itr:a)
+   {
+      insert(itr); 
+   }
+    int m=0;
+    string m_str="";
+    for(auto itr:a)
+    {
+        bool flag=true;
+        for(int i=0;i<itr.length();i++)
+        {
+            string str= itr.substr(0,i+1);
+            if(search(str)==false)
+            {
+               
+               flag=false;
+                break;
+            }
+        }
+     
+        if(flag==true)
+        {
+            if(itr.length()>m)
+            {
+                m=itr.length();
+                m_str=itr;
+            }
+            else if(itr.length()==m&&itr<m_str)
+            {
+                m=itr.length();
+                m_str=itr;
+            }
+        }
+    }
+    if(m_str=="")
+        return "None";
+    return m_str;
+}
