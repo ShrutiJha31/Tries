@@ -1,0 +1,52 @@
+#include<bits/stdc++.h>
+using namespace std;
+struct Node
+{
+    Node* alpha[26];
+   
+    bool containsKey(char ch)
+    {
+        if(alpha[ch-'a']==NULL)
+            return false;
+        return true;
+    }
+  
+    
+};
+Node* root=new Node();
+int cnt=0;
+void insert(string s)
+{
+   
+    for(int i=0;i<s.length();i++)
+    {
+     
+            string s1=s.substr(i,s.length()-i);
+          Node* node=root;
+            for(int k=0;k<s1.length();k++)
+            {
+              
+                if(node->containsKey(s1[k])==false)
+                {
+    
+                    cnt++;
+                    Node* new_node = new Node();
+                    node->alpha[s1[k]-'a']=new_node;
+                  node =node->alpha[s1[k]-'a'];
+                }
+                else
+                    node =node->alpha[s1[k]-'a'];
+               
+            }
+           
+        
+    }
+}
+
+int countDistinctSubstrings(string &s)
+{
+    cnt=0;
+   root=new Node();
+    insert(s);
+  return cnt+1;
+}
